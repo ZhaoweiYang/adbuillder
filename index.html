@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Facebook 广告 Excel 导入生成器</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo">f</span>
+        <div>
+          <h1>Facebook 广告 Excel 导入生成器</h1>
+          <p>填写信息，一键生成可导入 Ads Manager 的批量上传 Excel 文件</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <!-- 广告系列 -->
+      <section class="card">
+        <h2><span class="step">1</span> 广告系列 Campaign</h2>
+        <div class="grid">
+          <label class="field">
+            <span>系列名称 Campaign Name *</span>
+            <input type="text" id="campaignName" placeholder="2026夏季促销" />
+          </label>
+          <label class="field">
+            <span>系列状态 Status</span>
+            <select id="campaignStatus">
+              <option value="PAUSED" selected>PAUSED（暂停，推荐先导入）</option>
+              <option value="ACTIVE">ACTIVE（启用）</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>营销目标 Objective</span>
+            <select id="campaignObjective"></select>
+          </label>
+          <label class="field">
+            <span>系列日预算（分/最小货币单位）</span>
+            <input type="number" id="campaignDailyBudget" placeholder="如 5000 = $50.00（CBO 时填）" />
+          </label>
+          <label class="field">
+            <span>系列总预算（可选）</span>
+            <input type="number" id="campaignLifetimeBudget" placeholder="留空表示不使用" />
+          </label>
+        </div>
+      </section>
+
+      <!-- 广告组 -->
+      <section class="card">
+        <h2><span class="step">2</span> 广告组 Ad Set</h2>
+        <div class="grid">
+          <label class="field">
+            <span>广告组名称 Ad Set Name *</span>
+            <input type="text" id="adSetName" placeholder="美国-25到45岁" />
+          </label>
+          <label class="field">
+            <span>广告组状态 Status</span>
+            <select id="adSetStatus">
+              <option value="PAUSED" selected>PAUSED</option>
+              <option value="ACTIVE">ACTIVE</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>广告组日预算（分）</span>
+            <input type="number" id="adSetDailyBudget" placeholder="如 2000 = $20.00" />
+          </label>
+          <label class="field">
+            <span>广告组总预算（可选）</span>
+            <input type="number" id="adSetLifetimeBudget" />
+          </label>
+          <label class="field">
+            <span>优化目标 Optimization Goal</span>
+            <select id="optimizationGoal"></select>
+          </label>
+          <label class="field">
+            <span>计费方式 Billing Event</span>
+            <select id="billingEvent"></select>
+          </label>
+          <label class="field">
+            <span>出价上限 Bid Amount（分，可选）</span>
+            <input type="number" id="bidAmount" placeholder="留空为自动出价" />
+          </label>
+          <label class="field">
+            <span>投放国家 Countries *</span>
+            <input type="text" id="countries" placeholder="US, CA, GB（ISO 国家代码，逗号分隔）" />
+          </label>
+          <label class="field">
+            <span>城市 Cities（可选）</span>
+            <input type="text" id="cities" placeholder="如 New York, US" />
+          </label>
+          <label class="field">
+            <span>开始时间 Time Start（可选）</span>
+            <input type="text" id="adSetTimeStart" placeholder="2026-06-15 00:00:00" />
+          </label>
+          <label class="field">
+            <span>结束时间 Time Stop（可选）</span>
+            <input type="text" id="adSetTimeStop" placeholder="2026-07-15 00:00:00" />
+          </label>
+          <label class="field">
+            <span>最小年龄 Age Min</span>
+            <input type="number" id="ageMin" value="18" min="13" max="65" />
+          </label>
+          <label class="field">
+            <span>最大年龄 Age Max</span>
+            <input type="number" id="ageMax" value="65" min="13" max="65" />
+          </label>
+          <label class="field">
+            <span>性别 Gender</span>
+            <select id="gender"></select>
+          </label>
+        </div>
+      </section>
+
+      <!-- 广告 -->
+      <section class="card">
+        <h2><span class="step">3</span> 广告 Ads</h2>
+        <div class="grid">
+          <label class="field">
+            <span>广告状态 Ad Status</span>
+            <select id="adStatus">
+              <option value="PAUSED" selected>PAUSED</option>
+              <option value="ACTIVE">ACTIVE</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>URL 参数 URL Tags（可选，全局）</span>
+            <input type="text" id="urlTags" placeholder="utm_source=facebook&utm_medium=cpc" />
+          </label>
+        </div>
+        <div id="ads"></div>
+        <button type="button" id="addAd" class="btn-secondary">+ 添加一个广告</button>
+      </section>
+
+      <div class="actions">
+        <button type="button" id="preview" class="btn-secondary">预览数据</button>
+        <button type="button" id="generate" class="btn-primary">⬇ 生成 Excel 文件</button>
+      </div>
+
+      <div id="message" class="message" style="display: none"></div>
+
+      <div id="previewWrap" class="card" style="display: none">
+        <h2>数据预览（最多 5 行）</h2>
+        <div class="table-scroll">
+          <table id="previewTable"></table>
+        </div>
+      </div>
+
+      <section class="card tips">
+        <h2>📌 如何导入 Facebook</h2>
+        <ol>
+          <li>点击「生成 Excel 文件」下载 <code>.xlsx</code>。</li>
+          <li>打开 <a href="https://www.facebook.com/adsmanager" target="_blank" rel="noopener">Ads Manager 广告管理工具</a>。</li>
+          <li>在「广告」标签页选择「导入广告 / 批量上传 (Bulk import)」并上传文件。</li>
+          <li>核对字段映射（图片需用账户内的 Image Hash、像素 ID 等），确认后发布。</li>
+        </ol>
+        <p class="note">
+          提示：导入不会立即扣费，发布前可随时修改。Facebook 的列名与规则会不定期更新，
+          预算字段以账户货币的最小单位（如美分）填写。本工具所有数据均在本地浏览器处理，不会上传。
+        </p>
+      </section>
+    </main>
+
+    <footer class="footer">本地运行 · 零依赖 · 数据不出本机</footer>
+
+    <script src="xlsx.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
