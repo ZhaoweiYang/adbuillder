@@ -63,6 +63,60 @@ body {
   opacity: 0.9;
 }
 
+/* 平台切换标签 */
+.tabs {
+  max-width: 960px;
+  margin: 14px auto 0;
+  display: flex;
+  gap: 8px;
+}
+
+.tab {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  padding: 9px 22px;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 8px 8px 0 0;
+}
+
+.tab:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.tab.active {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* TikTok 平台时顶栏配色 */
+body[data-platform="tiktok"] .topbar {
+  background: #000;
+}
+
+body[data-platform="tiktok"] .logo {
+  color: #000;
+}
+
+/* TikTok 警告横幅 */
+.banner-tt {
+  background: #fff4f6;
+  border-color: #ffd6dd;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #1c1e21;
+}
+
+/* TikTok 生成按钮配色 */
+.btn-primary.tt {
+  background: #000;
+}
+
+.btn-primary.tt:hover {
+  background: #25f4ee;
+  color: #000;
+}
+
 .container {
   max-width: 960px;
   margin: 24px auto;

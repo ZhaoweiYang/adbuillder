@@ -3,21 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Facebook 广告 Excel 导入生成器</title>
+    <title>广告 Excel 导入生成器 · Facebook / TikTok</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header class="topbar">
       <div class="brand">
-        <span class="logo">f</span>
+        <span class="logo">Ad</span>
         <div>
-          <h1>Facebook 广告 Excel 导入生成器</h1>
-          <p>填写信息，一键生成可导入 Ads Manager 的批量上传 Excel 文件</p>
+          <h1>广告 Excel 导入生成器</h1>
+          <p>填写信息，一键生成可导入 Facebook / TikTok 的批量上传 Excel 文件</p>
         </div>
+      </div>
+      <div class="tabs">
+        <button type="button" class="tab active" data-platform="facebook">Facebook</button>
+        <button type="button" class="tab" data-platform="tiktok">TikTok</button>
       </div>
     </header>
 
-    <main class="container">
+    <!-- ============ Facebook ============ -->
+    <main class="container" id="platform-facebook">
       <!-- 广告系列 -->
       <section class="card">
         <h2><span class="step">1</span> 广告系列 Campaign</h2>
@@ -101,7 +106,6 @@
           </label>
         </div>
 
-        <!-- 2.1 像素与转化 -->
         <details class="sub" open>
           <summary>🎯 转化与像素 Pixel & Conversion</summary>
           <div class="grid">
@@ -128,121 +132,46 @@
           </div>
         </details>
 
-        <!-- 2.2 受众定向 -->
         <details class="sub" open>
           <summary>👥 受众定向 Audience Targeting</summary>
           <div class="grid">
-            <label class="field">
-              <span>投放国家 Countries</span>
-              <input type="text" id="countries" placeholder="US, CA, GB（ISO 国家代码，逗号分隔）" />
-            </label>
-            <label class="field">
-              <span>城市 Cities（可选）</span>
-              <input type="text" id="cities" placeholder="如 New York, US" />
-            </label>
-            <label class="field">
-              <span>地区/州 Regions（可选）</span>
-              <input type="text" id="regions" placeholder="如 California" />
-            </label>
-            <label class="field">
-              <span>邮编 Zip（可选）</span>
-              <input type="text" id="zip" placeholder="如 US:10001" />
-            </label>
-            <label class="field">
-              <span>地理类型 Location Types</span>
-              <input type="text" id="locationTypes" placeholder="home, recent（居住地/近期到访）" />
-            </label>
-            <label class="field">
-              <span>语言 Locales（可选）</span>
-              <input type="text" id="locales" placeholder="如 en_US, zh_CN" />
-            </label>
-            <label class="field">
-              <span>最小年龄 Age Min</span>
-              <input type="number" id="ageMin" value="18" min="13" max="65" />
-            </label>
-            <label class="field">
-              <span>最大年龄 Age Max</span>
-              <input type="number" id="ageMax" value="65" min="13" max="65" />
-            </label>
-            <label class="field">
-              <span>性别 Gender</span>
-              <select id="gender"></select>
-            </label>
-            <label class="field">
-              <span>受众扩展 Targeting Optimization（可选）</span>
-              <input type="text" id="targetingExpansion" placeholder="如 expansion_all / 留空" />
-            </label>
-            <label class="field">
-              <span>自定义受众 Custom Audiences（可选）</span>
-              <input type="text" id="customAudiences" placeholder="受众名称或 ID，逗号分隔" />
-            </label>
-            <label class="field">
-              <span>排除自定义受众 Excluded（可选）</span>
-              <input type="text" id="excludedCustomAudiences" placeholder="要排除的受众名称/ID" />
-            </label>
-            <label class="field">
-              <span>兴趣 Interests / 详细定向（可选）</span>
-              <input type="text" id="interests" placeholder="如 Fitness, Online shopping" />
-            </label>
-            <label class="field">
-              <span>行为 Behaviors（可选）</span>
-              <input type="text" id="behaviors" placeholder="如 Engaged Shoppers" />
-            </label>
-            <label class="field">
-              <span>排除兴趣 Excluded Interests（可选）</span>
-              <input type="text" id="excludedInterests" placeholder="要排除的兴趣" />
-            </label>
-            <label class="field">
-              <span>连接关系 Connections（可选）</span>
-              <input type="text" id="connections" placeholder="主页/应用/活动 ID" />
-            </label>
-            <label class="field">
-              <span>排除连接 Excluded Connections（可选）</span>
-              <input type="text" id="excludedConnections" placeholder="如 已关注主页的人" />
-            </label>
-            <label class="field">
-              <span>好友的连接 Friends of Connections（可选）</span>
-              <input type="text" id="friendsOfConnections" placeholder="主页 ID" />
-            </label>
+            <label class="field"><span>投放国家 Countries</span><input type="text" id="countries" placeholder="US, CA, GB（ISO 国家代码）" /></label>
+            <label class="field"><span>城市 Cities（可选）</span><input type="text" id="cities" placeholder="如 New York, US" /></label>
+            <label class="field"><span>地区/州 Regions（可选）</span><input type="text" id="regions" placeholder="如 California" /></label>
+            <label class="field"><span>邮编 Zip（可选）</span><input type="text" id="zip" placeholder="如 US:10001" /></label>
+            <label class="field"><span>地理类型 Location Types</span><input type="text" id="locationTypes" placeholder="home, recent" /></label>
+            <label class="field"><span>语言 Locales（可选）</span><input type="text" id="locales" placeholder="如 en_US, zh_CN" /></label>
+            <label class="field"><span>最小年龄 Age Min</span><input type="number" id="ageMin" value="18" min="13" max="65" /></label>
+            <label class="field"><span>最大年龄 Age Max</span><input type="number" id="ageMax" value="65" min="13" max="65" /></label>
+            <label class="field"><span>性别 Gender</span><select id="gender"></select></label>
+            <label class="field"><span>受众扩展 Targeting Optimization（可选）</span><input type="text" id="targetingExpansion" placeholder="如 expansion_all / 留空" /></label>
+            <label class="field"><span>自定义受众 Custom Audiences（可选）</span><input type="text" id="customAudiences" placeholder="受众名称或 ID" /></label>
+            <label class="field"><span>排除自定义受众 Excluded（可选）</span><input type="text" id="excludedCustomAudiences" placeholder="要排除的受众" /></label>
+            <label class="field"><span>兴趣 Interests / 详细定向（可选）</span><input type="text" id="interests" placeholder="如 Fitness, Online shopping" /></label>
+            <label class="field"><span>行为 Behaviors（可选）</span><input type="text" id="behaviors" placeholder="如 Engaged Shoppers" /></label>
+            <label class="field"><span>排除兴趣 Excluded Interests（可选）</span><input type="text" id="excludedInterests" placeholder="要排除的兴趣" /></label>
+            <label class="field"><span>连接关系 Connections（可选）</span><input type="text" id="connections" placeholder="主页/应用/活动 ID" /></label>
+            <label class="field"><span>排除连接 Excluded Connections（可选）</span><input type="text" id="excludedConnections" placeholder="如 已关注主页的人" /></label>
+            <label class="field"><span>好友的连接 Friends of Connections（可选）</span><input type="text" id="friendsOfConnections" placeholder="主页 ID" /></label>
           </div>
         </details>
 
-        <!-- 2.3 版位 -->
         <details class="sub" open>
           <summary>📐 版位 Placements</summary>
           <label class="field">
             <span>版位方式</span>
             <select id="placementMode">
-              <option value="automatic" selected>自动版位 Automatic（推荐，留空由 FB 分配）</option>
+              <option value="automatic" selected>自动版位 Automatic（推荐）</option>
               <option value="manual">手动版位 Manual（自行勾选）</option>
             </select>
           </label>
-
           <div id="manualPlacements">
-            <div class="place-group">
-              <h4>设备 Device Platforms</h4>
-              <div class="checks" id="devicePlatforms"></div>
-            </div>
-            <div class="place-group">
-              <h4>发布平台 Publisher Platforms</h4>
-              <div class="checks" id="publisherPlatforms"></div>
-            </div>
-            <div class="place-group">
-              <h4>Facebook 版位</h4>
-              <div class="checks" id="fbPositions"></div>
-            </div>
-            <div class="place-group">
-              <h4>Instagram 版位</h4>
-              <div class="checks" id="igPositions"></div>
-            </div>
-            <div class="place-group">
-              <h4>Audience Network 版位</h4>
-              <div class="checks" id="anPositions"></div>
-            </div>
-            <div class="place-group">
-              <h4>Messenger 版位</h4>
-              <div class="checks" id="msgrPositions"></div>
-            </div>
+            <div class="place-group"><h4>设备 Device Platforms</h4><div class="checks" id="devicePlatforms"></div></div>
+            <div class="place-group"><h4>发布平台 Publisher Platforms</h4><div class="checks" id="publisherPlatforms"></div></div>
+            <div class="place-group"><h4>Facebook 版位</h4><div class="checks" id="fbPositions"></div></div>
+            <div class="place-group"><h4>Instagram 版位</h4><div class="checks" id="igPositions"></div></div>
+            <div class="place-group"><h4>Audience Network 版位</h4><div class="checks" id="anPositions"></div></div>
+            <div class="place-group"><h4>Messenger 版位</h4><div class="checks" id="msgrPositions"></div></div>
             <p class="note">提示：未勾选某平台的具体版位时，Facebook 通常会使用该平台的全部可用版位。</p>
           </div>
         </details>
@@ -252,25 +181,12 @@
       <section class="card">
         <h2><span class="step">3</span> 广告 Ads</h2>
         <div class="grid">
-          <label class="field">
-            <span>广告状态 Ad Status</span>
-            <select id="adStatus">
-              <option value="PAUSED" selected>PAUSED</option>
-              <option value="ACTIVE">ACTIVE</option>
-            </select>
+          <label class="field"><span>广告状态 Ad Status</span>
+            <select id="adStatus"><option value="PAUSED" selected>PAUSED</option><option value="ACTIVE">ACTIVE</option></select>
           </label>
-          <label class="field">
-            <span>主页 ID Page ID（投放主体，建议填）</span>
-            <input type="text" id="pageId" placeholder="Facebook 公共主页 ID" />
-          </label>
-          <label class="field">
-            <span>Instagram 账号 ID（可选）</span>
-            <input type="text" id="instagramAccountId" placeholder="IG 账号 ID" />
-          </label>
-          <label class="field">
-            <span>URL 参数 URL Tags（可选，全局）</span>
-            <input type="text" id="urlTags" placeholder="utm_source=facebook&utm_medium=cpc" />
-          </label>
+          <label class="field"><span>主页 ID Page ID（建议填）</span><input type="text" id="pageId" placeholder="Facebook 公共主页 ID" /></label>
+          <label class="field"><span>Instagram 账号 ID（可选）</span><input type="text" id="instagramAccountId" placeholder="IG 账号 ID" /></label>
+          <label class="field"><span>URL 参数 URL Tags（可选）</span><input type="text" id="urlTags" placeholder="utm_source=facebook&utm_medium=cpc" /></label>
         </div>
         <div id="ads"></div>
         <button type="button" id="addAd" class="btn-secondary">+ 添加一个广告</button>
@@ -280,29 +196,124 @@
         <button type="button" id="preview" class="btn-secondary">预览数据</button>
         <button type="button" id="generate" class="btn-primary">⬇ 生成 Excel 文件</button>
       </div>
-
       <div id="message" class="message" style="display: none"></div>
-
       <div id="previewWrap" class="card" style="display: none">
         <h2>数据预览（最多 5 行）</h2>
-        <div class="table-scroll">
-          <table id="previewTable"></table>
-        </div>
+        <div class="table-scroll"><table id="previewTable"></table></div>
       </div>
 
       <section class="card tips">
         <h2>📌 如何导入 Facebook</h2>
         <ol>
           <li>点击「生成 Excel 文件」下载 <code>.xlsx</code>。</li>
-          <li>打开 <a href="https://www.facebook.com/adsmanager" target="_blank" rel="noopener">Ads Manager 广告管理工具</a>。</li>
-          <li>在「广告」标签页选择「导入广告 / 批量上传 (Bulk import)」并上传文件。</li>
-          <li>核对字段映射（像素 ID、自定义受众、主页等需用账户内已存在的资源），确认后发布。</li>
+          <li>打开 <a href="https://www.facebook.com/adsmanager" target="_blank" rel="noopener">Ads Manager</a>，在「广告」标签页选择「导入广告 / 批量上传」。</li>
+          <li>核对字段映射（像素 ID、受众、主页等需用账户内已存在资源），确认后发布。</li>
         </ol>
-        <p class="note">
-          提示：导入不会立即扣费，发布前可随时修改。像素 ID、自定义受众、主页/IG 账号、视频/图片等
-          均需为你账户内**已存在**的资源；定向高级字段（兴趣/行为）建议填写 Facebook 官方名称或 ID。
-          预算以账户货币最小单位（如美分）填写。所有数据均在本地浏览器处理，不会上传。
-        </p>
+        <p class="note">导入不会立即扣费，发布前可随时修改。预算以账户货币最小单位（如美分）填写。所有数据均在本地浏览器处理，不会上传。</p>
+      </section>
+    </main>
+
+    <!-- ============ TikTok ============ -->
+    <main class="container" id="platform-tiktok" hidden>
+      <section class="card banner-tt">
+        ⚠️ TikTok 的批量上传通常要求使用其后台下载的<strong>官方模板</strong>，列名/校验较严格。本工具为通用导出，建议先小批量试导；若某列报错，按提示调整或把 TikTok 官方模板发来以便 1:1 对齐。
+      </section>
+
+      <!-- 广告系列 -->
+      <section class="card">
+        <h2><span class="step">1</span> 广告系列 Campaign</h2>
+        <div class="grid">
+          <label class="field"><span>系列名称 Campaign Name *</span><input type="text" id="ttCampaignName" placeholder="春季新品推广" /></label>
+          <label class="field"><span>推广目标 Objective Type</span><select id="ttObjective"></select></label>
+          <label class="field"><span>系列预算优化 CBO</span>
+            <select id="ttCbo"><option value="OFF" selected>关闭 OFF</option><option value="ON">开启 ON</option></select>
+          </label>
+          <label class="field"><span>系列预算类型 Budget Mode</span><select id="ttCampaignBudgetMode"></select></label>
+          <label class="field"><span>系列预算 Campaign Budget</span><input type="number" id="ttCampaignBudget" placeholder="如 50（按账户货币）" /></label>
+        </div>
+      </section>
+
+      <!-- 广告组 -->
+      <section class="card">
+        <h2><span class="step">2</span> 广告组 Ad Group</h2>
+        <div class="grid">
+          <label class="field"><span>广告组名称 Ad Group Name *</span><input type="text" id="ttAdGroupName" placeholder="美国-18到34" /></label>
+          <label class="field"><span>推广类型 Promotion Type</span><select id="ttPromotionType"></select></label>
+          <label class="field"><span>广告组预算类型 Budget Mode</span><select id="ttAdGroupBudgetMode"></select></label>
+          <label class="field"><span>广告组预算 Budget</span><input type="number" id="ttAdGroupBudget" placeholder="如 20" /></label>
+          <label class="field"><span>开始时间 Start Time</span><input type="text" id="ttStart" placeholder="2026-06-15 00:00:00" /></label>
+          <label class="field"><span>结束时间 End Time（可选）</span><input type="text" id="ttEnd" placeholder="2026-07-15 00:00:00" /></label>
+          <label class="field"><span>分时段 Dayparting（可选）</span><input type="text" id="ttDayparting" placeholder="留空为全天" /></label>
+        </div>
+
+        <details class="sub" open>
+          <summary>🎯 转化与像素 Pixel & Conversion</summary>
+          <div class="grid">
+            <label class="field"><span>像素 ID Pixel ID</span><input type="text" id="ttPixelId" placeholder="转化目标必填" /></label>
+            <label class="field"><span>优化事件 Optimization Event</span><select id="ttOptEvent"></select></label>
+            <label class="field"><span>优化目标 Optimization Goal</span><select id="ttOptGoal"></select></label>
+            <label class="field"><span>计费方式 Billing Event</span><select id="ttBillingEvent"></select></label>
+            <label class="field"><span>出价策略 Bid Strategy</span><select id="ttBidStrategy"></select></label>
+            <label class="field"><span>出价 Bid（可选）</span><input type="number" id="ttBid" placeholder="自动出价时留空" /></label>
+          </div>
+        </details>
+
+        <details class="sub" open>
+          <summary>👥 受众定向 Audience Targeting</summary>
+          <div class="grid">
+            <label class="field"><span>投放地区 Location *</span><input type="text" id="ttLocation" placeholder="如 United States, Japan" /></label>
+            <label class="field"><span>语言 Languages（可选）</span><input type="text" id="ttLanguages" placeholder="如 English, Chinese" /></label>
+            <label class="field"><span>性别 Gender</span><select id="ttGender"></select></label>
+            <label class="field"><span>兴趣分类 Interest Categories（可选）</span><input type="text" id="ttInterests" placeholder="如 Beauty, Gaming" /></label>
+            <label class="field"><span>行为 Behaviors（可选）</span><input type="text" id="ttBehaviors" placeholder="如 Video interactions" /></label>
+            <label class="field"><span>自定义受众 Custom Audiences（可选）</span><input type="text" id="ttCustomAudiences" placeholder="受众名称或 ID" /></label>
+            <label class="field"><span>排除受众 Excluded Audiences（可选）</span><input type="text" id="ttExcludedAudiences" placeholder="要排除的受众" /></label>
+          </div>
+          <div class="place-group"><h4>年龄段 Age Groups</h4><div class="checks" id="ttAgeGroups"></div></div>
+        </details>
+
+        <details class="sub" open>
+          <summary>📐 版位 Placements</summary>
+          <label class="field"><span>版位方式 Placement Type</span>
+            <select id="ttPlacementMode">
+              <option value="automatic" selected>自动版位 Automatic（推荐）</option>
+              <option value="manual">手动版位 Select Placement</option>
+            </select>
+          </label>
+          <div id="ttManualPlacements">
+            <div class="place-group"><h4>版位 Placement</h4><div class="checks" id="ttPlacements"></div></div>
+          </div>
+        </details>
+      </section>
+
+      <!-- 广告 -->
+      <section class="card">
+        <h2><span class="step">3</span> 广告 Ads</h2>
+        <div class="grid">
+          <label class="field"><span>身份/账号 Identity Name（投放主体）</span><input type="text" id="ttIdentity" placeholder="TikTok 账号/身份名称" /></label>
+        </div>
+        <div id="ttAds"></div>
+        <button type="button" id="ttAddAd" class="btn-secondary">+ 添加一个广告</button>
+      </section>
+
+      <div class="actions">
+        <button type="button" id="ttPreview" class="btn-secondary">预览数据</button>
+        <button type="button" id="ttGenerate" class="btn-primary tt">⬇ 生成 Excel 文件</button>
+      </div>
+      <div id="ttMessage" class="message" style="display: none"></div>
+      <div id="ttPreviewWrap" class="card" style="display: none">
+        <h2>数据预览（最多 5 行）</h2>
+        <div class="table-scroll"><table id="ttPreviewTable"></table></div>
+      </div>
+
+      <section class="card tips">
+        <h2>📌 如何导入 TikTok</h2>
+        <ol>
+          <li>点击「生成 Excel 文件」下载 <code>.xlsx</code>。</li>
+          <li>打开 <a href="https://ads.tiktok.com/" target="_blank" rel="noopener">TikTok Ads Manager</a> → 广告系列 → 「批量操作 / 批量导入 (Bulk upload)」。</li>
+          <li>上传文件并核对；像素、视频/图片素材、身份账号等需为账户内已存在资源。</li>
+        </ol>
+        <p class="note">TikTok 导入校验较严格：列名需与其模板一致。如遇报错，把截图发来即可快速校正。所有数据均在本地浏览器处理，不会上传。</p>
       </section>
     </main>
 
@@ -310,5 +321,7 @@
 
     <script src="xlsx.js"></script>
     <script src="app.js"></script>
+    <script src="tiktok.js"></script>
+    <script src="platform.js"></script>
   </body>
 </html>
