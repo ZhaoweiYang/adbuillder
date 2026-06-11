@@ -136,7 +136,7 @@
             <label class="field"><span>地区/州 Regions（可选）</span><input type="text" id="regions" placeholder="如 California" /></label>
             <label class="field"><span>邮编 Zip（可选）</span><input type="text" id="zip" placeholder="如 US:10001" /></label>
             <label class="field"><span>地理类型 Location Types</span><input type="text" id="locationTypes" placeholder="home, recent" /></label>
-            <label class="field"><span>语言 Locales（可选）</span><input type="text" id="locales" placeholder="如 en_US, zh_CN" /></label>
+            <label class="field"><span>语言 Locales（可选，数字 ID）</span><input type="text" id="locales" placeholder="FB 数字 locale ID，如 6=英语(美国)、24=英语(英国)；不确定请留空" /></label>
             <label class="field"><span>最小年龄 Age Min</span><input type="number" id="ageMin" value="18" min="13" max="65" /></label>
             <label class="field"><span>最大年龄 Age Max</span><input type="number" id="ageMax" value="65" min="13" max="65" /></label>
             <label class="field"><span>性别 Gender</span><select id="gender"></select></label>
@@ -202,7 +202,7 @@
           <li>打开 <a href="https://www.facebook.com/adsmanager" target="_blank" rel="noopener">Ads Manager</a>，在「广告」标签页选择「导入广告 / 批量上传」。</li>
           <li>核对字段映射（像素 ID、受众、主页等需用账户内已存在资源），确认后发布。</li>
         </ol>
-        <p class="note">导入不会立即扣费，发布前可随时修改。预算以账户货币最小单位（如美分）填写。<strong>像素 ID 须为账户内真实存在的像素</strong>，否则会被阻止导入。注：转化事件、详细兴趣定向、投放主页等 Facebook 批量表暂不支持用列设置，建议导入后在 Ads Manager 内补充。所有数据均在本地浏览器处理，不会上传。</p>
+        <p class="note">导入不会立即扣费，发布前可随时修改。预算以账户货币最小单位（如美分）填写。<strong>像素 ID、视频/图片素材名、自定义受众等须为账户内真实存在的资源</strong>，否则会被阻止导入或提示找不到。语言 Locales 须填 Facebook 数字 locale ID（不确定就留空）。注：转化事件、详细兴趣定向、投放主页等批量表暂不支持用列设置，请导入后在 Ads Manager 内补充。所有数据均在本地浏览器处理，不会上传。</p>
       </section>
     </main>
 
