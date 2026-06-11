@@ -143,6 +143,80 @@ textarea {
   resize: vertical;
 }
 
+/* 折叠子分区 */
+.sub {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-top: 14px;
+  background: #fafbfc;
+  padding: 0 14px;
+}
+
+.sub > summary {
+  cursor: pointer;
+  font-weight: 700;
+  padding: 12px 4px;
+  font-size: 15px;
+  list-style: none;
+  user-select: none;
+}
+
+.sub > summary::-webkit-details-marker {
+  display: none;
+}
+
+.sub > summary::before {
+  content: "▸ ";
+  color: var(--fb);
+}
+
+.sub[open] > summary::before {
+  content: "▾ ";
+}
+
+.sub .grid {
+  padding-bottom: 16px;
+}
+
+/* 版位复选框 */
+.place-group {
+  padding: 8px 0;
+  border-top: 1px dashed var(--border);
+}
+
+.place-group h4 {
+  margin: 8px 0 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 5px 10px;
+}
+
+.check input {
+  width: auto;
+  margin: 0;
+}
+
+#manualPlacements {
+  padding-bottom: 14px;
+}
+
 /* 广告卡片 */
 .ad-card {
   border: 1px solid var(--border);
