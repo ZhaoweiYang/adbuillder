@@ -29,6 +29,7 @@
     'Gender',
     'Ad Name',
     'Ad Status',
+    'Creative Type',
     'Title',
     'Body',
     'Link',
@@ -42,13 +43,21 @@
   ];
 
   // 选项数据
+  // 注意：Facebook 导入界面的 Campaign Objective 列要求“显示名称”而非 API 枚举值。
   var OBJECTIVES = [
-    'OUTCOME_TRAFFIC',
-    'OUTCOME_AWARENESS',
-    'OUTCOME_ENGAGEMENT',
-    'OUTCOME_LEADS',
-    'OUTCOME_SALES',
-    'OUTCOME_APP_PROMOTION'
+    'Outcome Sales',
+    'Outcome Leads',
+    'Outcome Engagement',
+    'Outcome Awareness',
+    'Traffic',
+    'App Promotion'
+  ];
+  // Creative Type 为必填列；缺失会导致 Title/Body/Link/CTA 等字段被忽略。
+  var CREATIVE_TYPES = [
+    'Link Page Post Ad',
+    'Photo Page Post Ad',
+    'Video Page Post Ad',
+    'Text Page Post Ad'
   ];
   var OPTIMIZATION_GOALS = [
     'LINK_CLICKS',
@@ -108,6 +117,7 @@
       '</div>' +
       '<div class="grid">' +
       field('广告名称 Ad Name', '<input type="text" data-f="adName" placeholder="夏季促销-广告1">') +
+      field('创意类型 Creative Type *', selectHtml('creativeType', CREATIVE_TYPES, 'Link Page Post Ad')) +
       field('Call to Action', selectHtml('cta', CTAS, 'LEARN_MORE')) +
       field('标题 Title', '<input type="text" data-f="title" placeholder="限时优惠">') +
       field('落地页链接 Link', '<input type="url" data-f="link" placeholder="https://example.com">') +
@@ -228,6 +238,7 @@
         adset.gender,
         f('adName'),
         val('adStatus'),
+        f('creativeType'),
         f('title'),
         f('body'),
         f('link'),
