@@ -1,9 +1,6 @@
 /*
- * TikTok 广告批量导入生成器（与 Facebook 模块结构一致，独立运行）
- *
- * 注意：TikTok Ads Manager 的批量上传通常要求使用其后台下载的官方模板，
- * 列名/校验较严格。本模块为“尽力而为”的通用导出，字段值格式可能需按
- * 实际导入报错或官方模板微调。
+ * TikTok 广告批量导入生成器
+ * 列名与取值已对齐用户提供的官方批量上传模板（中文列名 + 英文取值）。
  */
 (function () {
   'use strict';
@@ -17,31 +14,36 @@
   }
 
   // ------------------------------------------------------------------
-  // 选项
+  // 选项（取值对齐官方模板 VALIDATION）
   // ------------------------------------------------------------------
   var OBJECTIVES = [
-    'Reach',
     'Traffic',
-    'Video Views',
-    'Community Interaction',
-    'Product Sales',
-    'Website Conversions',
-    'Lead Generation',
-    'App Promotion'
+    'Conversions',
+    'Website conversions',
+    'Product sales',
+    'Sales',
+    'Video views',
+    'Reach',
+    'Community interaction',
+    'Lead generation',
+    'App promotion',
+    'App Installs',
+    'Brand consideration'
   ];
   var BUDGET_MODES = [
     { v: 'Daily', label: '日预算 Daily' },
     { v: 'Lifetime', label: '总预算 Lifetime' },
     { v: 'No Limit', label: '不限 No Limit' }
   ];
+  // 优化位置 Optimization Location
   var PROMOTION_TYPES = [
     { v: 'Website', label: '网站 Website' },
     { v: 'App', label: '应用 App' },
-    { v: 'Lead Generation', label: '线索 Lead Generation' },
-    { v: 'Product Sales', label: '商品销售 Product Sales' },
-    { v: 'Follower', label: '涨粉 Follower' }
+    { v: 'TikTok Instant Form', label: '即时表单 Instant Form' },
+    { v: 'TikTok Instant Page', label: '即时落地页 Instant Page' },
+    { v: 'TikTok direct messages', label: '私信 Direct Messages' }
   ];
-  // 转化/优化事件
+  // 网站 Pixel 事件（自由文本，提供常用值）
   var OPTIMIZATION_EVENTS = [
     '',
     'Complete Payment',
@@ -58,6 +60,7 @@
     'Download',
     'Contact'
   ];
+  // 优化目标（自由文本）
   var OPTIMIZATION_GOALS = [
     { v: 'Conversion', label: '转化 Conversion' },
     { v: 'Click', label: '点击 Click' },
@@ -67,39 +70,57 @@
     { v: 'Value', label: '价值 Value' },
     { v: 'Lead', label: '线索 Lead' }
   ];
-  var BILLING_EVENTS = ['oCPM', 'CPC', 'CPM', 'CPV'];
+  var BILLING_EVENTS = ['oCPM', 'CPM', 'CPC', 'oCPC', 'CPV-6s-focused', 'CPV-15s-focused'];
   var BID_STRATEGIES = [
-    { v: 'Lowest Cost', label: '最低成本（自动出价）' },
+    { v: 'Lowest Cost', label: '最低成本 Lowest Cost' },
     { v: 'Cost Cap', label: '成本上限 Cost Cap' },
-    { v: 'Bid Cap', label: '竞价上限 Bid Cap' }
+    { v: 'Max Conversion', label: '最大转化 Max Conversion' },
+    { v: 'Highest Value', label: '最高价值 Highest Value' },
+    { v: 'Target ROAS', label: '目标 ROAS' }
   ];
   var GENDERS = [
-    { v: 'Unlimited', label: '不限 Unlimited' },
+    { v: 'All', label: '全部 All' },
     { v: 'Male', label: '男 Male' },
     { v: 'Female', label: '女 Female' }
   ];
+  // 广告样式 Ad Format
   var AD_FORMATS = [
-    { v: 'Single Video', label: '单视频 Single Video' },
-    { v: 'Single Image', label: '单图 Single Image' },
-    { v: 'Carousel', label: '轮播 Carousel' }
+    { v: 'Single video', label: '单视频 Single video' },
+    { v: 'Single image', label: '单图 Single image' },
+    { v: 'Carousel Image', label: '轮播图 Carousel Image' },
+    { v: 'TikTok post', label: 'TikTok 帖子 Post' },
+    { v: 'Dynamic format', label: '动态创意 Dynamic format' },
+    { v: 'Smart+', label: 'Smart+' }
   ];
+  // 行为引导文案 Call to action（自由文本，提供官方常用值）
   var CTAS = [
-    'Learn More',
-    'Shop Now',
-    'Sign Up',
+    'Learn more',
+    'Shop now',
+    'Sign up',
     'Download',
-    'Contact Us',
-    'Apply Now',
-    'Book Now',
-    'Watch Now',
-    'Order Now',
-    'Get Quote',
+    'Contact us',
+    'Apply now',
+    'Book now',
+    'Order now',
     'Subscribe',
-    'Play Game',
-    'Read More'
+    'Watch now',
+    'Play game',
+    'Read more',
+    'Install',
+    'Get quote',
+    'View now',
+    'Visit store',
+    'Interested',
+    'Listen now'
   ];
-
-  // 年龄段（多选）
+  // 广告发布身份类型 Identity Type
+  var IDENTITY_TYPES = [
+    'TikTok Account',
+    'TikTok Business Account',
+    'Custom Identity',
+    'TTBC Authorized Post',
+    'TikTok Shop'
+  ];
   var AGE_GROUPS = [
     { v: '13-17', label: '13-17' },
     { v: '18-24', label: '18-24' },
@@ -108,7 +129,6 @@
     { v: '45-54', label: '45-54' },
     { v: '55+', label: '55+' }
   ];
-  // 版位（手动）
   var PLACEMENTS = [
     { v: 'TikTok', label: 'TikTok' },
     { v: 'Pangle', label: 'Pangle' },
@@ -116,51 +136,58 @@
   ];
 
   // ------------------------------------------------------------------
-  // 列定义（唯一事实来源）：[表头, 取值函数(ad)]
+  // 列定义（唯一事实来源）：表头为官方模板中文列名
   // ------------------------------------------------------------------
   var SCHEMA = [
-    // 广告系列
-    ['Campaign Name', function () { return val('ttCampaignName'); }],
-    ['Objective Type', function () { return val('ttObjective'); }],
-    ['Campaign Budget Optimization', function () { return val('ttCbo'); }],
-    ['Campaign Budget Mode', function () { return val('ttCampaignBudgetMode'); }],
-    ['Campaign Budget', function () { return val('ttCampaignBudget'); }],
+    // 推广系列
+    ['系列名称', function () { return val('ttCampaignName'); }],
+    ['推广系列状态', function () { return 'Off'; }],
+    ['推广目标', function () { return val('ttObjective'); }],
+    ['推广系列预算优化', function () { return val('ttCbo'); }],
+    ['推广系列预算类型', function () { return val('ttCampaignBudgetMode'); }],
+    ['推广系列预算金额', function () { return val('ttCampaignBudget'); }],
 
     // 广告组
-    ['Ad Group Name', function () { return val('ttAdGroupName'); }],
-    ['Promotion Type', function () { return val('ttPromotionType'); }],
-    ['Pixel ID', function () { return val('ttPixelId'); }],
-    ['Optimization Event', function () { return val('ttOptEvent'); }],
-    ['Placement Type', function () { return val('ttPlacementMode') === 'manual' ? 'Select Placement' : 'Automatic Placement'; }],
-    ['Placement', function () { return placement('ttPlacements'); }],
-    ['Location', function () { return val('ttLocation'); }],
-    ['Gender', function () { return val('ttGender'); }],
-    ['Age Groups', function () { return getChecked('ttAgeGroups'); }],
-    ['Languages', function () { return val('ttLanguages'); }],
-    ['Interest Categories', function () { return val('ttInterests'); }],
-    ['Behaviors', function () { return val('ttBehaviors'); }],
-    ['Custom Audiences', function () { return val('ttCustomAudiences'); }],
-    ['Excluded Audiences', function () { return val('ttExcludedAudiences'); }],
-    ['Budget Mode', function () { return val('ttAdGroupBudgetMode'); }],
-    ['Budget', function () { return val('ttAdGroupBudget'); }],
-    ['Schedule Start Time', function () { return val('ttStart'); }],
-    ['Schedule End Time', function () { return val('ttEnd'); }],
-    ['Dayparting', function () { return val('ttDayparting'); }],
-    ['Optimization Goal', function () { return val('ttOptGoal'); }],
-    ['Bid Strategy', function () { return val('ttBidStrategy'); }],
-    ['Bid', function () { return val('ttBid'); }],
-    ['Billing Event', function () { return val('ttBillingEvent'); }],
+    ['广告组名称', function () { return val('ttAdGroupName'); }],
+    ['广告组状态', function () { return 'Off'; }],
+    ['互动类型', function () { return 'TikTok Account'; }],
+    ['版位类型', function () { return val('ttPlacementMode') === 'manual' ? 'Select' : 'Automatic'; }],
+    ['版位', function () { return placement('ttPlacements'); }],
+    ['优化位置', function () { return val('ttPromotionType'); }],
+    ['TikTok Pixel ID', function () { return val('ttPixelId'); }],
+    ['网站 Pixel 事件', function () { return val('ttOptEvent'); }],
+    ['受众定向类型', function () { return 'custom targeting'; }],
+    ['自定义受众 ', function () { return val('ttCustomAudiences'); }], // 模板该列名带末尾空格
+    ['排除受众 ID', function () { return val('ttExcludedAudiences'); }],
+    ['地域', function () { return val('ttLocation'); }],
+    ['性别', function () { return val('ttGender'); }],
+    ['年龄', function () { return getChecked('ttAgeGroups'); }],
+    ['语言', function () { return val('ttLanguages'); }],
+    ['兴趣分类', function () { return val('ttInterests'); }],
+    ['视频互动', function () { return val('ttBehaviors'); }],
+    ['广告组预算类型', function () { return val('ttAdGroupBudgetMode'); }],
+    ['广告组预算金额', function () { return val('ttAdGroupBudget'); }],
+    ['开始时间', function () { return val('ttStart'); }],
+    ['结束时间', function () { return val('ttEnd'); }],
+    ['分时段', function () { return val('ttDayparting'); }],
+    ['优化目标', function () { return val('ttOptGoal'); }],
+    ['计费方式', function () { return val('ttBillingEvent'); }],
+    ['竞价策略', function () { return val('ttBidStrategy'); }],
+    ['出价', function () { return val('ttBid'); }],
 
     // 广告
-    ['Ad Name', function (ad) { return ad('adName'); }],
-    ['Identity Name', function () { return val('ttIdentity'); }],
-    ['Ad Format', function (ad) { return ad('adFormat'); }],
-    ['Video ID', function (ad) { return ad('videoId'); }],
-    ['Image IDs', function (ad) { return ad('imageIds'); }],
-    ['Ad Text', function (ad) { return ad('adText'); }],
-    ['Call To Action', function (ad) { return ad('cta'); }],
-    ['Display Name', function (ad) { return ad('displayName'); }],
-    ['Landing Page URL', function (ad) { return ad('url'); }]
+    ['广告名称', function (ad) { return ad('adName'); }],
+    ['广告状态', function () { return 'Off'; }],
+    ['广告发布身份类型', function () { return val('ttIdentityType'); }],
+    ['广告发布身份ID', function () { return val('ttIdentity'); }],
+    ['广告样式', function (ad) { return ad('adFormat'); }],
+    ['图片名称', function (ad) { return ad('imageIds'); }],
+    ['视频名称', function (ad) { return ad('videoId'); }],
+    ['广告文案', function (ad) { return ad('adText'); }],
+    ['行动引导文案类型', function () { return 'Standard'; }],
+    ['行为引导文案', function (ad) { return ad('cta'); }],
+    ['网页类型', function () { return 'Custom link'; }],
+    ['落地页链接', function (ad) { return ad('url'); }]
   ];
 
   // ------------------------------------------------------------------
@@ -242,14 +269,13 @@
       '<button type="button" class="btn-remove" data-remove>删除</button>' +
       '</div>' +
       '<div class="grid">' +
-      field('广告名称 Ad Name *', '<input type="text" data-f="adName" placeholder="春季新品-广告1">') +
-      field('广告形式 Ad Format *', selectHtml('adFormat', AD_FORMATS, 'Single Video')) +
-      field('行动号召 Call To Action', selectHtml('cta', CTAS, 'Learn More')) +
-      field('视频 ID Video ID（单视频用）', '<input type="text" data-f="videoId" placeholder="账户素材库中的视频 ID">') +
-      field('图片 ID Image IDs（单图/轮播用）', '<input type="text" data-f="imageIds" placeholder="多个用逗号分隔">') +
+      field('广告名称 *', '<input type="text" data-f="adName" placeholder="春季新品-广告1">') +
+      field('广告样式 *', selectHtml('adFormat', AD_FORMATS, 'Single video')) +
+      field('行为引导文案 CTA', selectHtml('cta', CTAS, 'Learn more')) +
+      field('视频名称（单视频用）', '<input type="text" data-f="videoId" placeholder="素材库中的视频名称">') +
+      field('图片名称（单图/轮播用）', '<input type="text" data-f="imageIds" placeholder="多个用逗号分隔">') +
       field('广告文案 Ad Text', '<textarea data-f="adText" rows="2" placeholder="广告文案..."></textarea>', true) +
-      field('落地页 URL Landing Page', '<input type="url" data-f="url" placeholder="https://example.com">') +
-      field('显示名称 Display Name', '<input type="text" data-f="displayName" placeholder="品牌/应用名">') +
+      field('落地页链接 URL', '<input type="url" data-f="url" placeholder="https://example.com">') +
       '</div>' +
       '</div>'
     );
@@ -325,12 +351,12 @@
     var errors = [];
     if (!val('ttCampaignName')) errors.push('请填写广告系列名称');
     if (!val('ttAdGroupName')) errors.push('请填写广告组名称');
-    if (!val('ttLocation')) errors.push('请填写投放地区 Location');
+    if (!val('ttLocation')) errors.push('请填写投放地区 地域');
     if (val('ttOptGoal') === 'Conversion' && !val('ttPixelId')) {
-      errors.push('优化目标为「转化」时，请填写像素 ID');
+      errors.push('优化目标为「转化」时，请填写 TikTok Pixel ID');
     }
     if (val('ttPlacementMode') === 'manual' && !getChecked('ttPlacements')) {
-      errors.push('手动版位需至少勾选一个版位 Placement');
+      errors.push('手动版位需至少勾选一个版位');
     }
     var adCards = adsContainer.querySelectorAll('[data-ad]');
     if (adCards.length === 0) errors.push('至少需要一个广告');
@@ -342,10 +368,10 @@
       var label = '广告 #' + (i + 1) + '：';
       if (!g('adName')) errors.push(label + '请填写广告名称');
       var fmt = g('adFormat');
-      if (fmt === 'Single Video' && !g('videoId')) {
-        errors.push(label + '单视频广告需填写「视频 ID」');
-      } else if ((fmt === 'Single Image' || fmt === 'Carousel') && !g('imageIds')) {
-        errors.push(label + '图片/轮播广告需填写「图片 ID」');
+      if (fmt === 'Single video' && !g('videoId')) {
+        errors.push(label + '单视频广告需填写「视频名称」');
+      } else if ((fmt === 'Single image' || fmt === 'Carousel Image') && !g('imageIds')) {
+        errors.push(label + '图片/轮播广告需填写「图片名称」');
       }
     });
     return errors;
@@ -384,7 +410,7 @@
     }
     try {
       var rows = collectRows();
-      var bytes = MiniXLSX.build(rows, 'TikTok Ads');
+      var bytes = MiniXLSX.build(rows, '模板');
       var name = (val('ttCampaignName') || 'tiktok-ads').replace(/[\\/:*?"<>|]/g, '_');
       download(bytes, name + '.xlsx');
       showMessage('✅ 已生成 ' + (rows.length - 1) + ' 个广告（共 ' + rows[0].length + ' 列），文件已开始下载。', 'success');
@@ -420,7 +446,7 @@
 
   function init() {
     adsContainer = $('ttAds');
-    if (!adsContainer) return; // TikTok 区块不存在则跳过
+    if (!adsContainer) return;
 
     fillSelect($('ttObjective'), OBJECTIVES);
     fillSelect($('ttCampaignBudgetMode'), BUDGET_MODES);
@@ -431,6 +457,7 @@
     fillSelect($('ttBidStrategy'), BID_STRATEGIES);
     fillSelect($('ttGender'), GENDERS);
     fillSelect($('ttAdGroupBudgetMode'), BUDGET_MODES);
+    fillSelect($('ttIdentityType'), IDENTITY_TYPES);
 
     renderChecks($('ttAgeGroups'), AGE_GROUPS);
     renderChecks($('ttPlacements'), PLACEMENTS);

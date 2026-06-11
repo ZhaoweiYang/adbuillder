@@ -39,10 +39,9 @@
   ];
   var BID_STRATEGIES = [
     { v: '', label: '（不设置，使用账户默认）' },
-    { v: 'LOWEST_COST_WITHOUT_CAP', label: '最高数量 / 最低成本（自动出价）' },
-    { v: 'COST_CAP', label: '成本上限 Cost Cap' },
-    { v: 'LOWEST_COST_WITH_BID_CAP', label: '竞价上限 Bid Cap' },
-    { v: 'LOWEST_COST_WITH_MIN_ROAS', label: '最低 ROAS' }
+    { v: 'Highest volume or value', label: '最高数量/价值（自动出价）' },
+    { v: 'Bid cap', label: '竞价上限 Bid cap' },
+    { v: 'ROAS goal', label: 'ROAS 目标' }
   ];
   var CREATIVE_TYPES = [
     'Link Page Post Ad',
@@ -81,15 +80,15 @@
     'LEARN_MORE',
     'SHOP_NOW',
     'SIGN_UP',
-    'SUBSCRIBE',
     'DOWNLOAD',
     'GET_OFFER',
-    'BOOK_TRAVEL',
-    'CONTACT_US',
-    'SEND_MESSAGE',
-    'APPLY_NOW',
-    'GET_QUOTE',
+    'BOOK_NOW',
     'ORDER_NOW',
+    'CONTACT_US',
+    'GET_A_QUOTE',
+    'SEE_MORE',
+    'WATCH_MORE',
+    'BUY_NOW',
     'NO_BUTTON'
   ];
 
@@ -104,33 +103,24 @@
     { v: 'audience_network', label: 'Audience Network' },
     { v: 'messenger', label: 'Messenger' }
   ];
+  // 版位取值对齐官方批量模板的 VALIDATION 列表
   var FB_POSITIONS = [
     { v: 'feed', label: '信息流 Feed' },
-    { v: 'profile_feed', label: '主页信息流' },
-    { v: 'marketplace', label: 'Marketplace' },
-    { v: 'video_feeds', label: '视频信息流' },
     { v: 'right_hand_column', label: '右边栏' },
-    { v: 'story', label: '快拍 Stories' },
-    { v: 'facebook_reels', label: 'Reels' },
+    { v: 'instant_article', label: '快速文档 Instant Article' },
     { v: 'instream_video', label: '插播视频' },
-    { v: 'search', label: '搜索结果' }
+    { v: 'group', label: '小组 Groups' }
   ];
   var IG_POSITIONS = [
     { v: 'stream', label: '信息流 Feed' },
-    { v: 'story', label: '快拍 Stories' },
-    { v: 'explore', label: '探索 Explore' },
-    { v: 'explore_home', label: '探索主页' },
-    { v: 'reels', label: 'Reels' },
-    { v: 'profile_feed', label: '主页信息流' },
-    { v: 'ig_search', label: '搜索' }
+    { v: 'story', label: '快拍 Stories' }
   ];
   var AN_POSITIONS = [
     { v: 'classic', label: '原生/横幅/插屏' },
+    { v: 'instream_video', label: '插播视频' },
     { v: 'rewarded_video', label: '激励视频' }
   ];
   var MSGR_POSITIONS = [
-    { v: 'messenger_home', label: '收件箱 Inbox' },
-    { v: 'story', label: '快拍 Stories' },
     { v: 'sponsored_messages', label: '赞助消息' }
   ];
 

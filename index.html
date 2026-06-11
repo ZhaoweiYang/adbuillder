@@ -219,7 +219,7 @@
           <label class="field"><span>系列名称 Campaign Name *</span><input type="text" id="ttCampaignName" placeholder="春季新品推广" /></label>
           <label class="field"><span>推广目标 Objective Type</span><select id="ttObjective"></select></label>
           <label class="field"><span>系列预算优化 CBO</span>
-            <select id="ttCbo"><option value="OFF" selected>关闭 OFF</option><option value="ON">开启 ON</option></select>
+            <select id="ttCbo"><option value="Off" selected>关闭 Off</option><option value="On">开启 On</option></select>
           </label>
           <label class="field"><span>系列预算类型 Budget Mode</span><select id="ttCampaignBudgetMode"></select></label>
           <label class="field"><span>系列预算 Campaign Budget</span><input type="number" id="ttCampaignBudget" placeholder="如 50（按账户货币）" /></label>
@@ -283,7 +283,8 @@
       <section class="card">
         <h2><span class="step">3</span> 广告 Ads</h2>
         <div class="grid">
-          <label class="field"><span>身份/账号 Identity Name（投放主体）</span><input type="text" id="ttIdentity" placeholder="TikTok 账号/身份名称" /></label>
+          <label class="field"><span>广告发布身份类型 Identity Type</span><select id="ttIdentityType"></select></label>
+          <label class="field"><span>广告发布身份 ID（投放主体）</span><input type="text" id="ttIdentity" placeholder="TikTok 身份/账号 ID" /></label>
         </div>
         <div id="ttAds"></div>
         <button type="button" id="ttAddAd" class="btn-secondary">+ 添加一个广告</button>
