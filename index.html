@@ -115,11 +115,7 @@
             </label>
             <label class="field">
               <span>像素 ID Pixel ID</span>
-              <input type="text" id="pixelId" placeholder="如 1234567890（转化目标必填）" />
-            </label>
-            <label class="field">
-              <span>转化事件 Conversion Event</span>
-              <select id="customEventType"></select>
+              <input type="text" id="pixelId" placeholder="账户内真实像素 ID（转化目标必填）" />
             </label>
             <label class="field">
               <span>App ID（应用推广用，可选）</span>
@@ -147,9 +143,7 @@
             <label class="field"><span>受众扩展 Targeting Optimization（可选）</span><input type="text" id="targetingExpansion" placeholder="如 expansion_all / 留空" /></label>
             <label class="field"><span>自定义受众 Custom Audiences（可选）</span><input type="text" id="customAudiences" placeholder="受众名称或 ID" /></label>
             <label class="field"><span>排除自定义受众 Excluded（可选）</span><input type="text" id="excludedCustomAudiences" placeholder="要排除的受众" /></label>
-            <label class="field"><span>兴趣 Interests / 详细定向（可选）</span><input type="text" id="interests" placeholder="如 Fitness, Online shopping" /></label>
             <label class="field"><span>行为 Behaviors（可选）</span><input type="text" id="behaviors" placeholder="如 Engaged Shoppers" /></label>
-            <label class="field"><span>排除兴趣 Excluded Interests（可选）</span><input type="text" id="excludedInterests" placeholder="要排除的兴趣" /></label>
             <label class="field"><span>连接关系 Connections（可选）</span><input type="text" id="connections" placeholder="主页/应用/活动 ID" /></label>
             <label class="field"><span>排除连接 Excluded Connections（可选）</span><input type="text" id="excludedConnections" placeholder="如 已关注主页的人" /></label>
             <label class="field"><span>好友的连接 Friends of Connections（可选）</span><input type="text" id="friendsOfConnections" placeholder="主页 ID" /></label>
@@ -184,7 +178,6 @@
           <label class="field"><span>广告状态 Ad Status</span>
             <select id="adStatus"><option value="PAUSED" selected>PAUSED</option><option value="ACTIVE">ACTIVE</option></select>
           </label>
-          <label class="field"><span>主页 ID Page ID（建议填）</span><input type="text" id="pageId" placeholder="Facebook 公共主页 ID" /></label>
           <label class="field"><span>Instagram 账号 ID（可选）</span><input type="text" id="instagramAccountId" placeholder="IG 账号 ID" /></label>
           <label class="field"><span>URL 参数 URL Tags（可选）</span><input type="text" id="urlTags" placeholder="utm_source=facebook&utm_medium=cpc" /></label>
         </div>
@@ -209,7 +202,7 @@
           <li>打开 <a href="https://www.facebook.com/adsmanager" target="_blank" rel="noopener">Ads Manager</a>，在「广告」标签页选择「导入广告 / 批量上传」。</li>
           <li>核对字段映射（像素 ID、受众、主页等需用账户内已存在资源），确认后发布。</li>
         </ol>
-        <p class="note">导入不会立即扣费，发布前可随时修改。预算以账户货币最小单位（如美分）填写。所有数据均在本地浏览器处理，不会上传。</p>
+        <p class="note">导入不会立即扣费，发布前可随时修改。预算以账户货币最小单位（如美分）填写。<strong>像素 ID 须为账户内真实存在的像素</strong>，否则会被阻止导入。注：转化事件、详细兴趣定向、投放主页等 Facebook 批量表暂不支持用列设置，建议导入后在 Ads Manager 内补充。所有数据均在本地浏览器处理，不会上传。</p>
       </section>
     </main>
 

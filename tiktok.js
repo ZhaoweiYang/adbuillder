@@ -296,7 +296,29 @@
       }
       rows.push(row);
     });
-    return rows;
+    return pruneEmptyColumns(rows);
+  }
+
+  // 删除所有数据行都为空的列，避免未填写字段产生无谓警告
+  function pruneEmptyColumns(rows) {
+    if (rows.length < 2) return rows;
+    var header = rows[0];
+    var keep = [];
+    for (var c = 0; c < header.length; c++) {
+      var has = false;
+      for (var r = 1; r < rows.length; r++) {
+        if (rows[r][c] !== undefined && rows[r][c] !== '') {
+          has = true;
+          break;
+        }
+      }
+      if (has) keep.push(c);
+    }
+    return rows.map(function (row) {
+      return keep.map(function (c) {
+        return row[c];
+      });
+    });
   }
 
   function validate() {

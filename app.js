@@ -38,6 +38,7 @@
     'FINANCIAL_PRODUCTS_SERVICES'
   ];
   var BID_STRATEGIES = [
+    { v: '', label: '（不设置，使用账户默认）' },
     { v: 'LOWEST_COST_WITHOUT_CAP', label: '最高数量 / 最低成本（自动出价）' },
     { v: 'COST_CAP', label: '成本上限 Cost Cap' },
     { v: 'LOWEST_COST_WITH_BID_CAP', label: '竞价上限 Bid Cap' },
@@ -62,27 +63,6 @@
     'QUALITY_CALL'
   ];
   var BILLING_EVENTS = ['IMPRESSIONS', 'LINK_CLICKS', 'THRUPLAY'];
-  // 转化事件（像素 Custom Event Type）
-  var CUSTOM_EVENTS = [
-    '',
-    'PURCHASE',
-    'LEAD',
-    'COMPLETE_REGISTRATION',
-    'ADD_TO_CART',
-    'INITIATE_CHECKOUT',
-    'ADD_PAYMENT_INFO',
-    'ADD_TO_WISHLIST',
-    'VIEW_CONTENT',
-    'SEARCH',
-    'SUBSCRIBE',
-    'START_TRIAL',
-    'CONTACT',
-    'DONATE',
-    'SUBMIT_APPLICATION',
-    'SCHEDULE',
-    'FIND_LOCATION',
-    'CUSTOMIZE_PRODUCT'
-  ];
   // 转化位置 / 落地位置
   var DESTINATION_TYPES = [
     { v: 'WEBSITE', label: '网站 Website' },
@@ -182,7 +162,6 @@
     ['Bid Amount', function () { return val('bidAmount'); }],
     // 像素与转化
     ['Conversion Tracking Pixels', function () { return val('pixelId'); }],
-    ['Custom Event Type', function () { return val('customEventType'); }],
     ['Application ID', function () { return val('applicationId'); }],
     ['Product Set ID', function () { return val('productSetId'); }],
     // 定向 - 地理
@@ -199,9 +178,6 @@
     // 定向 - 受众/兴趣/连接
     ['Custom Audiences', function () { return val('customAudiences'); }],
     ['Excluded Custom Audiences', function () { return val('excludedCustomAudiences'); }],
-    ['Interests', function () { return val('interests'); }],
-    ['Behaviors', function () { return val('behaviors'); }],
-    ['Excluded Interests', function () { return val('excludedInterests'); }],
     ['Connections', function () { return val('connections'); }],
     ['Excluded Connections', function () { return val('excludedConnections'); }],
     ['Friends of Connections', function () { return val('friendsOfConnections'); }],
@@ -218,7 +194,6 @@
     ['Ad Name', function (ad) { return ad('adName'); }],
     ['Ad Status', function () { return val('adStatus'); }],
     ['Creative Type', function (ad) { return ad('creativeType'); }],
-    ['Page ID', function () { return val('pageId'); }],
     ['Instagram Account ID', function () { return val('instagramAccountId'); }],
     ['Title', function (ad) { return ad('title'); }],
     ['Body', function (ad) { return ad('body'); }],
@@ -377,7 +352,29 @@
       rows.push(row);
     });
 
-    return rows;
+    return pruneEmptyColumns(rows);
+  }
+
+  // 删除所有数据行都为空的列：避免未填写的可选字段产生无谓的导入警告
+  function pruneEmptyColumns(rows) {
+    if (rows.length < 2) return rows;
+    var header = rows[0];
+    var keep = [];
+    for (var c = 0; c < header.length; c++) {
+      var has = false;
+      for (var r = 1; r < rows.length; r++) {
+        if (rows[r][c] !== undefined && rows[r][c] !== '') {
+          has = true;
+          break;
+        }
+      }
+      if (has) keep.push(c);
+    }
+    return rows.map(function (row) {
+      return keep.map(function (c) {
+        return row[c];
+      });
+    });
   }
 
   function validate() {
@@ -390,9 +387,6 @@
     // 转化目标需要像素
     if (val('optimizationGoal') === 'OFFSITE_CONVERSIONS' && !val('pixelId')) {
       errors.push('优化目标为「转化」时，请填写像素 ID（Pixel ID）');
-    }
-    if (val('customEventType') && !val('pixelId')) {
-      errors.push('设置了转化事件时，请填写像素 ID（Pixel ID）');
     }
     // 手动版位需选平台
     if (val('placementMode') === 'manual' && !getChecked('publisherPlatforms')) {
@@ -502,7 +496,6 @@
     fillSelect($('destinationType'), DESTINATION_TYPES);
     fillSelect($('optimizationGoal'), OPTIMIZATION_GOALS);
     fillSelect($('billingEvent'), BILLING_EVENTS);
-    fillSelect($('customEventType'), CUSTOM_EVENTS);
     fillSelect($('gender'), GENDERS);
 
     renderChecks($('devicePlatforms'), DEVICE_PLATFORMS);
