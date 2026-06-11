@@ -39,6 +39,7 @@
     'Image File Name',
     'Image Hash',
     'Video File Name',
+    'Video ID',
     'URL Tags'
   ];
 
@@ -126,7 +127,8 @@
       field('链接描述 Link Description', '<input type="text" data-f="linkDescription" placeholder="补充说明">') +
       field('图片文件名 Image File Name', '<input type="text" data-f="imageFileName" placeholder="banner.jpg">') +
       field('图片 Hash（可选）', '<input type="text" data-f="imageHash" placeholder="账户内图片 hash">') +
-      field('视频文件名（可选）', '<input type="text" data-f="videoFileName" placeholder="promo.mp4">') +
+      field('视频文件名（视频广告用）', '<input type="text" data-f="videoFileName" placeholder="promo.mp4">') +
+      field('视频 ID（视频广告用，可选）', '<input type="text" data-f="videoId" placeholder="账户内视频 ID">') +
       '</div>' +
       '</div>'
     );
@@ -248,6 +250,7 @@
         f('imageFileName'),
         f('imageHash'),
         f('videoFileName'),
+        f('videoId'),
         val('urlTags')
       ];
       rows.push(row);
@@ -264,10 +267,24 @@
     var adCards = adsContainer.querySelectorAll('[data-ad]');
     if (adCards.length === 0) errors.push('至少需要一个广告');
     adCards.forEach(function (card, i) {
-      var adName = card.querySelector('[data-f="adName"]').value.trim();
-      var link = card.querySelector('[data-f="link"]').value.trim();
-      if (!adName) errors.push('广告 #' + (i + 1) + '：请填写广告名称');
-      if (!link) errors.push('广告 #' + (i + 1) + '：请填写落地页链接');
+      function g(name) {
+        var el = card.querySelector('[data-f="' + name + '"]');
+        return el ? el.value.trim() : '';
+      }
+      var label = '广告 #' + (i + 1) + '：';
+      if (!g('adName')) errors.push(label + '请填写广告名称');
+      if (!g('link')) errors.push(label + '请填写落地页链接');
+      // 按创意类型校验素材，避免导入时出现“缺少视频/图片”警告
+      var type = g('creativeType');
+      if (type === 'Video Page Post Ad') {
+        if (!g('videoFileName') && !g('videoId')) {
+          errors.push(label + '视频广告需填写「视频文件名」或「视频 ID」');
+        }
+      } else if (type === 'Photo Page Post Ad' || type === 'Link Page Post Ad') {
+        if (!g('imageFileName') && !g('imageHash')) {
+          errors.push(label + '该创意类型需填写「图片文件名」或「图片 Hash」');
+        }
+      }
     });
     return errors;
   }
