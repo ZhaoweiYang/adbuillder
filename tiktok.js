@@ -144,8 +144,8 @@
     ['推广系列状态', function () { return 'Off'; }],
     ['推广目标', function () { return val('ttObjective'); }],
     ['推广系列预算优化', function () { return val('ttCbo'); }],
-    ['推广系列预算类型', function () { return val('ttCampaignBudgetMode'); }],
-    ['推广系列预算金额', function () { return val('ttCampaignBudget'); }],
+    ['推广系列预算类型', function () { return cboOn() ? val('ttCampaignBudgetMode') : ''; }],
+    ['推广系列预算金额', function () { return cboOn() ? val('ttCampaignBudget') : ''; }],
 
     // 广告组
     ['广告组名称', function () { return val('ttAdGroupName'); }],
@@ -165,8 +165,8 @@
     ['语言', function () { return val('ttLanguages'); }],
     ['兴趣分类', function () { return val('ttInterests'); }],
     ['视频互动', function () { return val('ttBehaviors'); }],
-    ['广告组预算类型', function () { return val('ttAdGroupBudgetMode'); }],
-    ['广告组预算金额', function () { return val('ttAdGroupBudget'); }],
+    ['广告组预算类型', function () { return cboOn() ? '' : val('ttAdGroupBudgetMode'); }],
+    ['广告组预算金额', function () { return cboOn() ? '' : val('ttAdGroupBudget'); }],
     ['开始时间', function () { return val('ttStart'); }],
     ['结束时间', function () { return val('ttEnd'); }],
     ['分时段', function () { return val('ttDayparting'); }],
@@ -238,6 +238,11 @@
   function placement(containerId) {
     if (val('ttPlacementMode') !== 'manual') return '';
     return getChecked(containerId);
+  }
+
+  // CBO 开启 => 预算在系列层级；关闭 => 预算在广告组层级
+  function cboOn() {
+    return val('ttCbo') === 'On';
   }
 
   // ------------------------------------------------------------------
