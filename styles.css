@@ -197,6 +197,38 @@ textarea {
   resize: vertical;
 }
 
+/* 模板栏 */
+.tpl-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px 16px;
+}
+
+.tpl-label {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.tpl-bar select {
+  width: auto;
+  min-width: 180px;
+  flex: 0 1 auto;
+}
+
+.tpl-btn {
+  padding: 8px 14px;
+  font-size: 13px;
+}
+
+.tpl-msg {
+  font-size: 13px;
+  color: var(--ok);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
 /* 折叠子分区 */
 .sub {
   border: 1px solid var(--border);
